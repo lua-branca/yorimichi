@@ -66,8 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitButton.textContent = '送信中...';
                 submitButton.disabled = true;
 
-                // Prepare data for GAS
+                // Prepare data for GAS (URL Encoded for better compatibility)
                 const formData = new FormData(contactForm);
+                const params = new URLSearchParams();
+                for (const pair of formData.entries()) {
+                    params.append(pair[0], pair[1]);
+                }
 
                 // If URL is not set yet, simulate success (for demo/testing)
                 if (GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE') {
@@ -81,19 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Send data to GAS
                 fetch(GAS_URL, {
                     method: 'POST',
-                    body: formData
+                    body: params
                 })
                     .then(response => response.json())
                     .then(data => {
                         if (data.result === 'success') {
                             showSuccess();
                         } else {
+                            console.error('GAS Error:', data);
                             alert('送信に失敗しました。もう一度お試しください。');
                             resetButton();
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('Fetch Error:', error);
                         alert('送信エラーが発生しました。');
                         resetButton();
                     });
