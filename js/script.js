@@ -24,70 +24,84 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form Validation Logic
     const contactForm = document.querySelector('.contact-form');
     const successMessage = document.getElementById('form-success');
+    const submitButton = document.querySelector('.btn-submit');
+
+    // Google Apps Script Web App URL
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWncIpV4fsbO91QLlJdSInUTiTUa9z58l4bEysnG1Bomm_55Li81yoWZDvOJ4ZUMpb-g/exec';
 
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-
-            // Reset previous errors
-            clearErrors();
-
-            // Validation
             let isValid = true;
 
-            // Name
+            // Reset errors
+            document.querySelectorAll('.form-group').forEach(group => {
+                group.classList.remove('has-error');
+            });
+
+            // Name Validation
             const nameInput = document.getElementById('name');
             if (!nameInput.value.trim()) {
-                showError(nameInput, 'お名前を入力してください');
+                showError(nameInput);
                 isValid = false;
             }
 
-            // Email
+            // Email Validation
             const emailInput = document.getElementById('email');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailInput.value.trim()) {
-                showError(emailInput, 'メールアドレスを入力してください');
-                isValid = false;
-            } else if (!emailPattern.test(emailInput.value.trim())) {
-                showError(emailInput, '正しいメールアドレスの形式で入力してください');
+            if (!validateEmail(emailInput.value)) {
+                showError(emailInput);
                 isValid = false;
             }
 
-            // Type
+            // Type Validation
             const typeInput = document.getElementById('type');
             if (!typeInput.value) {
-                showError(typeInput, 'お問い合わせ種別を選択してください');
+                showError(typeInput);
                 isValid = false;
             }
 
             if (isValid) {
-                // Simulate submission
-                const submitBtn = contactForm.querySelector('.btn-submit');
-                const originalBtnText = submitBtn.textContent;
+                // Show loading state
+                const originalBtnText = submitButton.textContent;
+                submitButton.textContent = '送信中...';
+                submitButton.disabled = true;
 
-                submitBtn.disabled = true;
-                submitBtn.textContent = '送信中...';
+                // Prepare data for GAS
+                const formData = new FormData(contactForm);
 
-                setTimeout(() => {
-                    // Success
-                    contactForm.style.display = 'none';
-                    successMessage.classList.add('visible');
+                // If URL is not set yet, simulate success (for demo/testing)
+                if (GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE') {
+                    console.warn('GAS URL not set. Simulating success.');
+                    setTimeout(() => {
+                        showSuccess();
+                    }, 1500);
+                    return;
+                }
 
-                    // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Reset form
-                    contactForm.reset();
-
-                    // Restore button state (in case we want to reuse)
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                }, 1500);
+                // Send data to GAS
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === 'success') {
+                            showSuccess();
+                        } else {
+                            alert('送信に失敗しました。もう一度お試しください。');
+                            resetButton();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('送信エラーが発生しました。');
+                        resetButton();
+                    });
             }
         });
     }
 
-    function showError(input, message) {
+    function showError(input) {
         const formGroup = input.closest('.form-group');
         formGroup.classList.add('has-error');
         input.classList.add('error');
