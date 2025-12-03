@@ -73,15 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     params.append(pair[0], pair[1]);
                 }
 
-                // If URL is not set yet, simulate success (for demo/testing)
-                if (GAS_URL === 'YOUR_GAS_WEB_APP_URL_HERE') {
-                    console.warn('GAS URL not set. Simulating success.');
-                    setTimeout(() => {
-                        showSuccess();
-                    }, 1500);
-                    return;
-                }
-
                 // Send data to GAS
                 fetch(GAS_URL, {
                     method: 'POST',
@@ -109,24 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function showError(input) {
         const formGroup = input.closest('.form-group');
         formGroup.classList.add('has-error');
-        input.classList.add('error');
-
-        // Check if error message element exists, if not create it
-        let errorMsg = formGroup.querySelector('.error-message');
-        if (!errorMsg) {
-            errorMsg = document.createElement('p');
-            errorMsg.className = 'error-message';
-            formGroup.appendChild(errorMsg);
-        }
-        errorMsg.textContent = message;
+        // Error message is already in HTML, just showing the group error state
     }
 
-    function clearErrors() {
-        const errorGroups = document.querySelectorAll('.form-group.has-error');
-        errorGroups.forEach(group => {
-            group.classList.remove('has-error');
-            const input = group.querySelector('.form-input, .form-select, .form-textarea');
-            if (input) input.classList.remove('error');
-        });
+    function showSuccess() {
+        contactForm.style.display = 'none';
+        successMessage.classList.add('visible');
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetButton() {
+        submitButton.textContent = '送信する';
+        submitButton.disabled = false;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
 });
