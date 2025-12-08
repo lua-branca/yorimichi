@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Application | Yorimichi Living</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo-transparent.png">
+    <meta name="description" content="イベント申し込みフォーム">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css?v=20251204-1">
+
+    <!-- Analytics -->
+    <script src="../js/analytics.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-container">
+            <h1 class="logo">
+                <a href="../index.html">
+                    <img src="../assets/images/logo-transparent.png" alt="Yorimichi Living">
+                </a>
+            </h1>
+            <nav class="site-nav">
+                <ul class="nav-list">
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#services">Services</a></li>
+                    <li><a href="../events/index.html" class="active">Events</a></li>
+                    <li><a href="../index.html#form" class="btn-nav">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="container">
+                <h2 class="page-title">Application</h2>
+                <p class="page-subtitle">イベント申し込み</p>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="section form-section">
+            <div class="container">
+                <div class="form-container">
+                    <div id="form-success" class="form-success-message">
+                        <h3>お申し込みありがとうございます</h3>
+                        <p>送信が完了しました。<br>内容を確認の上、担当者よりご連絡させていただきます。</p>
+                        <div class="events-more" style="margin-top: 20px;">
+                            <a href="../index.html" class="btn btn-outline">トップページに戻る</a>
+                        </div>
+                    </div>
+
+                    <form class="event-apply-form" action="#" method="POST">
+                        <div class="form-group">
+                            <label for="name" class="form-label required">お名前</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="山田 太郎" required>
+                            <div class="error-message">お名前を入力してください</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label required">メールアドレス</label>
+                            <input type="email" id="email" name="email" class="form-input"
+                                placeholder="example@email.com" required>
+                            <div class="error-message">有効なメールアドレスを入力してください</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event_name" class="form-label required">参加希望イベント</label>
+                            <select id="event_name" name="event_name" class="form-select" required>
+                                <option value="" disabled selected>選択してください</option>
+                                <option value="12/21 料理研究家杉なまこ先生の手料理ホムパ">12/21 料理研究家杉なまこ先生の手料理ホムパ</option>
+                                <!-- Future events can be added here -->
+                            </select>
+                            <div class="error-message">イベントを選択してください</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">会員種別</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="member_type" value="会員" required> 会員
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="member_type" value="ゲスト" required> ゲスト（紹介制）
+                                </label>
+                            </div>
+                            <div class="error-message">会員種別を選択してください</div>
+                        </div>
+
+                        <div class="form-group" id="introducer-group" style="display: none;">
+                            <label for="introducer" class="form-label required">紹介者名</label>
+                            <input type="text" id="introducer" name="introducer" class="form-input"
+                                placeholder="紹介者のお名前">
+                            <div class="error-message">紹介者名を入力してください</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="count" class="form-label required">参加人数</label>
+                            <select id="count" name="count" class="form-select" required>
+                                <option value="1">1名</option>
+                                <option value="2">2名</option>
+                                <option value="3">3名</option>
+                                <option value="4">4名</option>
+                                <option value="5以上">5名以上</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="allergies" class="form-label">アレルギー・食事制限</label>
+                            <textarea id="allergies" name="allergies" class="form-textarea"
+                                placeholder="アレルギーや苦手な食材があればご記入ください" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarks" class="form-label">その他・備考</label>
+                            <textarea id="remarks" name="remarks" class="form-textarea" placeholder="ご質問などがあればご記入ください"
+                                rows="3"></textarea>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-primary btn-submit">申し込む</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="../assets/images/logo-transparent.png" alt="Yorimichi Living">
+                    </div>
+                    <p class="footer-concept">おかえり、もうひとつのリビングへ。</p>
+                </div>
+                <nav class="footer-nav">
+                    <ul class="footer-links">
+                        <li><a href="../index.html#about">About</a></li>
+                        <li><a href="../index.html#services">Services</a></li>
+                        <li><a href="../events/index.html">Events</a></li>
+                        <li><a href="../index.html#form">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <ul class="footer-legal-links">
+                    <li><a href="../legal/tokushoho.html">特定商取引法に基づく表記</a></li>
+                    <li><a href="../legal/privacy.html">プライバシーポリシー</a></li>
+                    <li><a href="../legal/terms.html">利用規約</a></li>
+                </ul>
+                <p class="copyright">&copy; 2025 Yorimichi Living</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/script.js?v=20251204-1"></script>
+</body>
+
+</html>
