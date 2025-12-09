@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event Application Form
     // TODO: Replace with the actual GAS Web App URL provided by the user
     const EVENT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwJ-0uWCJsY5GPIzpH7MkZtNtSB2fUrGRRXqAYrWGj5_Ly4JeduDk9Q3z5nE3TTh16Mdw/exec';
-    setupFormValidation('.event-apply-form', EVENT_GAS_URL);
+    // setupFormValidation('.event-apply-form', EVENT_GAS_URL);
 
     // Member Type Logic for Event Form
     const eventForm = document.querySelector('.event-apply-form');
