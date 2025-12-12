@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $body .= "https://yorimichi-living.com/";
 
     // Admin Notification
-    $admin_subject = "【お問い合わせ】{$type} ({$name}様)";
+    $admin_subject = "【よりみちリビング】新しいお問い合わせがありました（{$name}様）";
     $admin_body = "Webサイトより新しいお問い合わせがありました。\n\n" . $body;
 
     $headers = "From: support@yorimichi-living.com" . "\r\n" .
