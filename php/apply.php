@@ -1,6 +1,6 @@
 <?php
 // Configuration
-$ADMIN_EMAIL = 'yorimichi@yorimichi-living.com'; // Replace with actual admin email if different
+$ADMIN_EMAIL = 'support@yorimichi-living.com'; // Replace with actual admin email if different
 // TODO: USER TO UPDATE THESE URLs
 $STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gMaEXfpOdyAdr49HkcAo00';
 $GAS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJ-0uWCJsY5GPIzpH7MkZtNtSB2fUrGRRXqAYrWGj5_Ly4JeduDk9Q3z5nE3TTh16Mdw/exec';
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_subject = "【新規申込】{$event_name} ({$name}様)";
     $admin_body = "Webサイトより新しいイベント申し込みがありました。\n\n" . $body;
 
-    $headers = "From: no-reply@yorimichi-living.com" . "\r\n" .
+    $headers = "From: support@yorimichi-living.com" . "\r\n" .
         "Reply-To: " . $email;
 
     // Mail to Admin
