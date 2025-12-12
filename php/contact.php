@@ -89,7 +89,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Admin Notification
     $admin_subject = "【よりみちリビング】新しいお問い合わせがありました（{$name}様）";
-    $admin_body = "Webサイトより新しいお問い合わせがありました。\n\n" . $body;
+    $admin_body = "Webサイトより新しいお問い合わせがありました。\n";
+    $admin_body .= "このメールにそのまま返信すると、お問い合わせ者（{$email}）へメールが送れます。\n\n";
+    $admin_body .= "【お問い合わせ内容】\n";
+    $admin_body .= "--------------------------------------------------\n";
+    $admin_body .= "■お名前：{$name}\n";
+    $admin_body .= "■メールアドレス：{$email}\n";
+    $admin_body .= "■お問い合わせ種別：{$type}\n";
+    $admin_body .= "■メッセージ：\n{$message}\n";
+    $admin_body .= "--------------------------------------------------\n";
 
     $headers = "From: support@yorimichi-living.com" . "\r\n" .
         "Reply-To: " . $email;
