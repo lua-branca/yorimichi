@@ -35,6 +35,13 @@ function sendToGas($url, $data)
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Security: Simple Honeypot Check
+    // If the hidden field 'confirm_code' is filled, it's likely a bot.
+    // We treat it as success (or just exit) to avoid processing.
+    if (!empty($_POST['confirm_code'])) {
+        exit;
+    }
+
     // Get form data
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
