@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Form Validation Logic
-    setupFormValidation('.contact-form', 'https://script.google.com/macros/s/AKfycbwWncIpV4fsbO91QLlJdSInUTiTUa9z58l4bEysnG1Bomm_55Li81yoWZDvOJ4ZUMpb-g/exec');
+    // Contact form now points to local PHP script instead of GAS directly
+    setupFormValidation('.contact-form', 'php/contact.php');
 
     // Event Application Form
     // TODO: Replace with the actual GAS Web App URL provided by the user
