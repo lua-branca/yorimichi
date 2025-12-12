@@ -97,7 +97,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_body .= "■メールアドレス：{$email}\n";
     $admin_body .= "■お問い合わせ種別：{$type}\n";
     $admin_body .= "■メッセージ：\n{$message}\n";
-    $admin_body .= "--------------------------------------------------\n";
+    $admin_body .= "--------------------------------------------------\n\n";
+    $admin_body .= "■管理用スプレッドシート\n";
+    $admin_body .= "https://docs.google.com/spreadsheets/d/1nR39KU5DeGtkbIwLA5FTEbciKY2SM57zn64krVLbZWc/edit?gid=0#gid=0\n";
 
     $headers = "From: support@yorimichi-living.com" . "\r\n" .
         "Reply-To: " . $email;
