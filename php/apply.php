@@ -121,8 +121,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $body .= "https://yorimichi-living.com/";
 
     // Send Admin Email
+    $ADMIN_SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1gBKitr46TpU6fpOCmTDoX4w0UkU9BKX9XTKKHHIprB4/edit?gid=0#gid=0';
+
     $admin_subject = "【新規申込】{$event_name} ({$name}様)";
-    $admin_body = "Webサイトより新しいイベント申し込みがありました。\n\n" . $body;
+    $admin_body = "Webサイトより新しいイベント申し込みがありました。\n";
+    $admin_body .= "詳細は以下の管理用スプレッドシートをご確認ください。\n\n";
+    $admin_body .= "■管理用スプレッドシート\n";
+    $admin_body .= "{$ADMIN_SPREADSHEET_URL}\n\n";
+    $admin_body .= "【申込概要】\n";
+    $admin_body .= "イベント：{$event_name}\n";
+    $admin_body .= "お名前：{$name}\n";
+    $admin_body .= "人数：{$count}\n";
+    $admin_body .= "会員種別：{$member_type}\n";
 
     $headers = "From: support@yorimichi-living.com" . "\r\n" .
         "Reply-To: " . $email;
