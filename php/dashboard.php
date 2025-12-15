@@ -423,3 +423,73 @@ arsort($devices);
         // --- 1. Trend Chart ---
         const dailyData = <?= json_encode($daily) ?>;
         // Reverse to show Old -> New
+        const labels = Object.keys(dailyData).reverse();
+        const values = Object.values(dailyData).reverse();
+
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.map(d => d.slice(5)), // Show 'MM-DD'
+                datasets: [{
+                    label: 'PV数',
+                    data: values,
+                    backgroundColor: '#3498db',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        // --- 2. Geo Resolution (Client-side) ---
+        const topIps = <?= $top_ips_json ?>;
+        const geoList = document.getElementById('geo-list');
+        
+        async function resolveGeo() {
+            if(topIps.length === 0) {
+                geoList.innerHTML = "データがありません";
+                return;
+            }
+            
+            geoList.innerHTML = "";
+            
+            // Using ipapi.co (Supports HTTPS)
+            for (const ip of topIps) {
+                try {
+                    // Skip local IPs
+                    if(ip === '127.0.0.1' || ip.startsWith('192.168.') || ip === '::1') continue;
+
+                    const res = await fetch(`https://ipapi.co/${ip}/json/`);
+                    const data = await res.json();
+                    
+                    if(!data.error) {
+                        const div = document.createElement('div');
+                        div.className = 'geo-item';
+                        div.innerHTML = `
+                            <span class="name">
+                                <span style="font-weight:bold; color:#555">${data.region}</span>, ${data.country_name}
+                            </span>
+                            <span class="sub" style="font-size:0.8rem; color:#999">${data.org}</span>
+                        `;
+                        geoList.appendChild(div);
+                    }
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+            if(geoList.children.length === 0) {
+                 geoList.innerHTML = "<span style='color:#999'>-</span>";
+            }
+        }
+        
+        resolveGeo();
+    </script>
+</body>
+
+</html>
