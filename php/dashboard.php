@@ -118,7 +118,7 @@ foreach ($logs as $log) {
 
     // safe access
     $ts = $log[0];
-    $ip = $log[1]; // Use later for unique users
+    $visitor_ip = $log[1]; // Renamed to avoid collision
     $url = $log[2];
     $ref = $log[3];
     $dev = $log[5];
@@ -143,7 +143,23 @@ foreach ($logs as $log) {
     if (!isset($devices[$dev]))
         $devices[$dev] = 0;
     $devices[$dev]++;
+
+    // Daily PV
+    $d = substr($ts, 0, 10);
+    if (isset($daily[$d])) {
+        $daily[$d]++;
+    }
+
+    // Count IPs
+    if (!isset($ips[$visitor_ip]))
+        $ips[$visitor_ip] = 0;
+    $ips[$visitor_ip]++;
 }
+
+// Sort Top 10 IPs
+arsort($ips);
+$top_ips = array_slice(array_keys($ips), 0, 10);
+$top_ips_json = json_encode($top_ips);
 
 arsort($pages);
 arsort($referrers);
@@ -157,6 +173,8 @@ arsort($devices);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yorimichi Dashboard</title>
+    <!-- Chart.js for beautiful graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -226,6 +244,7 @@ arsort($devices);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 768px) {
@@ -277,6 +296,18 @@ arsort($devices);
             background: #3498db;
             height: 100%;
         }
+
+        .geo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .geo-flag {
+            margin-right: 10px;
+        }
     </style>
 </head>
 
@@ -306,6 +337,12 @@ arsort($devices);
             </div>
         </div>
 
+        <!-- Trend Chart -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h3>日別アクセス推移 (過去30日)</h3>
+            <canvas id="trendChart" style="max-height: 300px;"></canvas>
+        </div>
+
         <div class="row">
             <div class="card">
                 <h3>人気ページランキング</h3>
@@ -314,8 +351,8 @@ arsort($devices);
                     $i = 0;
                     foreach ($pages as $p => $c) {
                         if ($i++ >= 5)
-                            break; // Top 5
-                        $percent = ($c / $total_pv) * 100;
+                            break;
+                        $percent = ($total_pv > 0) ? ($c / $total_pv) * 100 : 0;
                         echo "<li class='list-item'>
                                 <div style='width:100%'>
                                     <div style='display:flex; justify-content:space-between'>
@@ -333,32 +370,37 @@ arsort($devices);
             </div>
 
             <div class="card">
-                <h3>どこから来た？ (リファラー)</h3>
-                <ul class="list-group">
-                    <?php
-                    $i = 0;
-                    foreach ($referrers as $r => $c) {
-                        if ($i++ >= 5)
-                            break;
-                        $percent = ($c / $total_pv) * 100;
-                        $disp = $r;
-                        if (strlen($disp) > 40)
-                            $disp = substr($disp, 0, 40) . '...';
-                        echo "<li class='list-item'>
-                                <div style='width:100%'>
-                                    <div style='display:flex; justify-content:space-between'>
-                                        <span class='name' title='$r'>$disp</span>
-                                        <span class='count'>$c</span>
-                                    </div>
-                                    <div class='viz-bar'><div class='viz-fill' style='width:{$percent}%; background:#2ecc71'></div></div>
-                                </div>
-                              </li>";
-                    }
-                    if (empty($referrers))
-                        echo "<li>データがありません</li>";
-                    ?>
-                </ul>
+                <h3>推定エリア (Top IPs)</h3>
+                <div id="geo-list">読み込み中...</div>
             </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <h3>リファラー (アクセス元)</h3>
+            <ul class="list-group">
+                <?php
+                $i = 0;
+                foreach ($referrers as $r => $c) {
+                    if ($i++ >= 5)
+                        break;
+                    $percent = ($total_pv > 0) ? ($c / $total_pv) * 100 : 0;
+                    $disp = $r;
+                    if (strlen($disp) > 50)
+                        $disp = substr($disp, 0, 50) . '...';
+                    echo "<li class='list-item'>
+                            <div style='width:100%'>
+                                <div style='display:flex; justify-content:space-between'>
+                                    <span class='name' title='$r'>$disp</span>
+                                    <span class='count'>$c</span>
+                                </div>
+                                <div class='viz-bar'><div class='viz-fill' style='width:{$percent}%; background:#2ecc71'></div></div>
+                            </div>
+                          </li>";
+                }
+                if (empty($referrers))
+                    echo "<li>データがありません</li>";
+                ?>
+            </ul>
         </div>
 
         <p style="text-align:center; color:#999; margin-top:50px; font-size:0.8rem;">
@@ -366,6 +408,8 @@ arsort($devices);
             Server Time: <?= date('Y-m-d H:i:s') ?>
         </p>
     </div>
-</body>
 
-</html>
+    <script>
+        // --- 1. Trend Chart ---
+        const dailyData = <?= json_encode($daily) ?>;
+        // Reverse to show Old -> New
