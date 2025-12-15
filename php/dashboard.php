@@ -112,6 +112,16 @@ $referrers = [];
 $pages = [];
 $devices = [];
 
+// Daily Stats (Last 30 days)
+$daily = [];
+for ($i = 0; $i < 30; $i++) {
+    $d = date('Y-m-d', strtotime("-$i days"));
+    $daily[$d] = 0;
+}
+
+// Top IPs for Geo Check
+$ips = [];
+
 foreach ($logs as $log) {
     if (count($log) < 6)
         continue;
