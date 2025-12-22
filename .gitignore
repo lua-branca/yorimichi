@@ -1,3 +1,8 @@
 .DS_Store
 deploy.py
 __pycache__/
+
+_local_tools/
+curl*.txt
+*.py
+!deploy.py

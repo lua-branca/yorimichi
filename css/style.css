@@ -688,6 +688,12 @@ h6 {
     margin-bottom: 10px;
 }
 
+.event-tag.finished {
+    color: var(--color-text-light);
+    border-color: var(--color-text-light);
+    background-color: #eee;
+}
+
 .event-title {
     font-size: 1.1rem;
     margin-bottom: 10px;
@@ -729,6 +735,16 @@ h6 {
     border-color: transparent;
     box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4);
     transform: translateY(-2px);
+}
+
+.btn.disabled,
+.btn:disabled {
+    background: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -1256,6 +1272,12 @@ h6 {
     box-shadow: 0 2px 8px rgba(253, 160, 133, 0.4);
 }
 
+.event-hero-tag.finished {
+    background-image: none;
+    background-color: #999;
+    box-shadow: none;
+}
+
 .event-hero-title {
     font-size: 2rem;
     font-weight: 700;
@@ -1398,4 +1420,18 @@ h6 {
 
 .footer-legal-links a:hover {
     color: #fff;
+}
+
+/* No Events Message */
+.no-events-msg {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--glass-bg);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-light);
+    width: 100%;
+    grid-column: 1 / -1;
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: var(--glass-border);
 }
