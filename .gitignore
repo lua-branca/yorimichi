@@ -6,3 +6,4 @@ _local_tools/
 curl*.txt
 *.py
 !deploy.py
+!debug_ftp_temp.py
