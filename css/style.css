@@ -1435,3 +1435,60 @@ h6 {
     box-shadow: var(--shadow-sm);
     border: var(--glass-border);
 }
+
+/* Membership Page Hero */
+.page-hero {
+    position: relative;
+    padding: 100px 0 80px;
+    text-align: center;
+    color: var(--color-white);
+    background-color: transparent !important;
+    /* Override inline style if any */
+    overflow: hidden;
+}
+
+.page-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.page-hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Dark overlay */
+    z-index: 1;
+}
+
+.page-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    /* Anchor to bottom to ensure people are visible */
+    filter: blur(2px);
+    /* Slight blur for abstract feel */
+}
+
+/* Ensure content sits above overlay */
+.page-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.page-hero .section-title-ja {
+    color: var(--color-white);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-hero .section-title-en {
+    color: rgba(255, 255, 255, 0.8);
+}
