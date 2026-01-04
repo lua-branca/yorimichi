@@ -59,11 +59,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Determine Stripe Link based on Event (if multiple events in future, use switch)
-// Basic Logic for "12/21 料理研究家杉なまこ先生の手料理ホムパ"
-    // In the future, map event_name to ID
+    // Map event_name to ID, Password, and Payment Link
     $evt_id_param = '';
+    $access_password = 'yorimichi1221'; // Default fallback
+    $payment_link = $STRIPE_PAYMENT_LINK; // Default to global config
+
     if (strpos($event_name, '12/21') !== false) {
         $evt_id_param = '?evt=20251221';
+        $access_password = 'yorimichi1221';
+        // Use default/old link for Namako if needed, or keep global
+    } elseif (strpos($event_name, '1/27') !== false) {
+        $evt_id_param = '?evt=20260127';
+        $access_password = 'yorimichi0127';
+        $payment_link = 'https://buy.stripe.com/28E5kDdhGamo5YCcTwcAo01';
     }
 
     // Send to Google Sheets (GAS)
@@ -105,8 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Unified Payment Flow for ALL users
     $body .= "※参加費のお支払いをもって予約確定となります。\n";
     $body .= "このまま自動的に決済画面へ移動しますが、もし移動しない場合は以下のURLよりお支払いください。\n";
-    if ($STRIPE_PAYMENT_LINK !== 'YOUR_STRIPE_PAYMENT_LINK_HERE') {
-        $body .= $STRIPE_PAYMENT_LINK . "\n\n";
+    if (!empty($payment_link) && $payment_link !== 'YOUR_STRIPE_PAYMENT_LINK_HERE') {
+        $body .= $payment_link . "\n\n";
     } else {
         $body .= "(決済リンク準備中)\n\n";
     }
@@ -114,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $body .= "■当日の会場について\n";
     $body .= "以下のページより地図とアクセス方法をご確認いただけます。\n";
     $body .= "URL: https://yorimichi-living.com/php/access.php{$evt_id_param}\n";
-    $body .= "合言葉: yorimichi1221\n\n";
+    $body .= "合言葉: {$access_password}\n\n";
 
     $body .= "当日お会いできるのを楽しみにしております。\n\n";
     $body .= "よりみちリビング\n";
@@ -145,8 +153,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mb_send_mail($email, $subject, $body, $user_headers);
 
     // Redirect to Success Page with Stripe Link param (For ALL users)
-    if ($STRIPE_PAYMENT_LINK !== 'YOUR_STRIPE_PAYMENT_LINK_HERE') {
-        header("Location: success.php?redirect=" . urlencode($STRIPE_PAYMENT_LINK));
+    if (!empty($payment_link) && $payment_link !== 'YOUR_STRIPE_PAYMENT_LINK_HERE') {
+        header("Location: success.php?redirect=" . urlencode($payment_link));
     } else {
         // Fallback for testing/placeholder
         header("Location: success.php?payment_link_missing=true");

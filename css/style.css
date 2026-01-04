@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap');
+
 /* Variables */
 :root {
     /* Colors */
@@ -425,58 +428,178 @@ h6 {
     }
 }
 
-/* About Section */
+/* About Section (Refined Concept Design) */
 .about-section {
-    background-color: var(--color-bg-accent-light);
+    background-color: #fcfbf9;
+    /* Lighter, cleaner beige */
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
 }
 
-.about-content {
+/* Container Layout: Image Left, Text Right */
+.about-layout {
     display: flex;
+    flex-direction: row-reverse;
+    /* Text (Right in DOM) <- Image (Left in DOM) visually */
     align-items: center;
-    gap: 60px;
-    justify-content: space-between;
+    /* Center vertically */
+    gap: 80px;
+    /* More generous gap for PC */
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    /* Safe area */
 }
 
-.about-text {
-    flex: 1;
-}
-
-.about-lead {
-    font-size: 1.8rem;
-    color: var(--color-accent);
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
-
-.about-text p {
-    margin-bottom: 1.5rem;
-    font-size: 1.05rem;
-}
-
+/* Image Area */
 .about-image {
     flex: 1;
-    max-width: 500px;
+    position: relative;
+    max-width: 50%;
 }
 
 .about-image img {
-    border-radius: var(--radius-lg);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 20px 20px 0px #e6ccb2;
+    display: block;
 }
 
-@media (max-width: 768px) {
-    .about-content {
-        flex-direction: column;
-        gap: 40px;
+/* Text Area */
+.text-area {
+    flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    /* Vertical Lead (Right), Body (Left) */
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 60px;
+    /* Gap between vertical lead and body */
+}
+
+/* Vertical Lead */
+.concept-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: 'Noto Serif JP', serif;
+    letter-spacing: 0.25em;
+    /* Elegantly wide */
+    flex-shrink: 0;
+}
+
+.concept-vertical .main-copy {
+    font-size: 2.2rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 2.2;
+    margin: 0;
+}
+
+/* Body Text */
+.about-text-body {
+    flex: 1;
+    line-height: 2.4;
+    /* Relaxed reading experience */
+    font-size: 1rem;
+    color: #555;
+    font-family: 'Noto Sans JP', sans-serif;
+    padding-top: 20px;
+}
+
+.about-text-body p {
+    margin-bottom: 24px;
+    text-align: justify;
+}
+
+/* --- Responsive Breakpoints --- */
+
+/* Tablet (Portrait/Small Desktop): 1024px and below */
+/* Switch to stacked earlier to avoid squeezing */
+@media (max-width: 1024px) {
+    .about-section {
+        padding: 80px 0;
     }
 
-    .about-lead {
-        font-size: 1.5rem;
-        text-align: center;
+    .about-layout {
+        flex-direction: column-reverse;
+        /* Image Top, Text Bottom */
+        gap: 60px;
+        align-items: center;
     }
 
     .about-image {
-        width: 100%;
+        max-width: 80%;
+        /* Don't be full width on tablet, keep elegance */
+        width: 80%;
+    }
+
+    .text-area {
+        width: 80%;
+        /* Match image width */
+        gap: 40px;
+        justify-content: center;
+        /* Center the text block */
+    }
+}
+
+/* Mobile: 768px and below */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 60px 0;
+    }
+
+    .about-layout {
+        padding: 0 20px;
+        gap: 40px;
+    }
+
+    .about-image {
         max-width: 100%;
+        width: 100%;
+    }
+
+    .about-image img {
+        box-shadow: 10px 10px 0px #e6ccb2;
+    }
+
+    .text-area {
+        width: 100%;
+        flex-direction: column;
+        /* Stack Vertical Lead and Body vertically */
+        gap: 30px;
+        align-items: flex-start;
+        /* Align Left */
+    }
+
+    .concept-vertical {
+        writing-mode: horizontal-tb;
+        /* Switch vertical text to horizontal for mobile readability? */
+        /* User originally asked for vertical, but on mobile pure vertical can be hard if long. 
+           However, let's keep vertical if it fits, or switch to horizontal if it looks better. 
+           Usually "Concept" titles look good horizontal on mobile if they are long. 
+           Let's try staying vertical RL but limited height, OR switch to horizontal for safety.
+           Plan A description "Japanese Modern" implies vertical. 
+           Let's keep vertical but maybe shorter container? 
+           Actually, horizontal is often safer for small screens. 
+           Let's stick to Horizontal for mobile lead to avoid layout breaking. */
+        writing-mode: horizontal-tb;
+        width: 100%;
+        text-align: left;
+        border-left: 4px solid #e6ccb2;
+        /* Accent line for horizontal */
+        padding-left: 16px;
+    }
+
+    .concept-vertical .main-copy {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        letter-spacing: 0.1em;
+    }
+
+    .about-text-body {
+        padding-top: 0;
     }
 }
 
@@ -1248,6 +1371,7 @@ h6 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top center;
     opacity: 0.7;
 }
 
