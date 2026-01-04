@@ -2,7 +2,15 @@
 session_start();
 
 // Password configuration
+$evt = $_GET['evt'] ?? $_POST['evt'] ?? '';
+
+// Default Password (Namako Event)
 $PASSWORD = 'yorimichi1221';
+
+// Dynamic Password Logic
+if ($evt === '20260127') {
+    $PASSWORD = 'yorimichi0127';
+}
 
 $error = '';
 

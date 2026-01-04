@@ -114,9 +114,14 @@ if (empty($_SESSION['is_allowed'])) {
                     $cal_loc = '東京都千代田区神田淡路町1-15-12';
                     $cal_details = 'よりみちリビングでのイベントです。';
 
-                    // Switch logic for future events (Example)
-                    // if ($evt_id === 'event_0110') { ... }
-                    
+                    // Switch logic for future events
+                    if ($evt_id === '20260127') {
+                        $cal_title = 'すーさんのおばんざいキッチン';
+                        // 2026-01-27 18:00 - 22:00 JST => 09:00 - 13:00 UTC
+                        $cal_dates = '20260127T090000Z/20260127T130000Z';
+                        $cal_details = 'ゲスト：すーさん（鈴木 基次）をお招きするおばんざいイベントです。';
+                    }
+
                     $cal_url = "https://www.google.com/calendar/render?action=TEMPLATE";
                     $cal_url .= "&text=" . urlencode($cal_title);
                     $cal_url .= "&dates=" . $cal_dates;
