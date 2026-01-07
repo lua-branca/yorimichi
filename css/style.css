@@ -1616,3 +1616,86 @@ h6 {
 .page-hero .section-title-en {
     color: rgba(255, 255, 255, 0.8);
 }
+
+/* Guest Guidelines Section */
+.guidelines-section {
+    background-color: #faf9f6;
+    /* Warm off-white */
+    padding: 80px 0;
+}
+
+.guidelines-intro {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.guideline-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.guideline-card:hover {
+    transform: translateY(-5px);
+}
+
+.guideline-header {
+    display: flex;
+    align-items: center;
+    /* Center align vertically */
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.guideline-number {
+    background-color: transparent;
+    /* Emoji doesn't need bg */
+    font-size: 2rem;
+    /* Larger icon */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: -5px;
+    /* Adjust spacing slightly */
+}
+
+.guideline-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-text);
+}
+
+.guideline-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #666;
+    margin-top: 15px;
+    /* Add top margin instead of left */
+}
+
+@media (max-width: 768px) {
+    .guideline-desc {
+        margin-top: 10px;
+    }
+
+    .guideline-card {
+        padding: 20px;
+        /* Compress padding on mobile */
+    }
+}
